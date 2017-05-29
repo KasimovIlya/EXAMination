@@ -38,10 +38,15 @@ for i in range(0, len(urls)):
         title = "no title"
 
     try:
-        text = info.find("div", {"class" : "article__content"}).text
+        text = ''
+        texts = info.find("div", {"class" : "article__content"}).findAll('p')
+        for item in texts:
+            item = item.text
+            item = item.strip()
+            text += item
     except AttributeError:
         text = "no text"
-    
+
     try:
         time = info.find("span", {"class" : "article__header__date"}).text
     except AttributeError:
@@ -57,5 +62,4 @@ for i in range(0, len(urls)):
 db = firebase.FirebaseApplication(firebase_url)
 
 for smth in articles:
-    print(smth.__dict__)
     db.post("/articles", smth.__dict__)

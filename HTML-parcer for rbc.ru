@@ -3,6 +3,7 @@ from firebase import firebase
 import requests
 from bs4 import BeautifulSoup
 
+#Класс, где мы будем хранить информацию про статью
 class Article:
     title = ''
     text = ''
@@ -10,6 +11,7 @@ class Article:
     time = ''
     image = ''
 
+#Метод для класса Article
     def __init__(self, title, text, author, time, image):
         self.title = title
         self.text = text
@@ -22,6 +24,7 @@ urls = ["http://www.rbc.ru/politics/29/05/2017/592bd8f89a7947b6996ecfa7?from=new
 firebase_url = "https://exam-76a95.firebaseio.com/"
 articles = []
 
+#Парсим
 for i in range(0, len(urls)):
     html_doc = requests.get(urls[i]).text
     soup = BeautifulSoup(html_doc, "lxml")
@@ -60,6 +63,6 @@ for i in range(0, len(urls)):
     articles.append(Article(title, text, author, time, image))
 
 db = firebase.FirebaseApplication(firebase_url)
-
+#Кладем в БД
 for smth in articles:
     db.post("/articles", smth.__dict__)

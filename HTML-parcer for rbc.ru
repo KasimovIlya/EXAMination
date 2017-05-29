@@ -15,7 +15,7 @@ class Article:
 
 
 #preparing for parsing
-urls = ["http://www.rbc.ru/finances/29/05/2017/592bc2dd9a7947ad72e25e53?from=newsfeed"]
+urls = ["http://www.rbc.ru/rbcfreenews/592bc9ca9a7947b12f6cfafa?from=newsfeed"]
 firebase_url = "https://exam-76a95.firebaseio.com/"
 articles = []
 
@@ -23,13 +23,26 @@ for i in range(0, len(urls)):
     html_doc = requests.get(urls[i]).text
     soup = BeautifulSoup(html_doc, "lxml")
     info = soup.find("body", {"class": "news"})
-    author = info.find("div", {"class" : "article__header__author-block"}).text
-    title = info.find("span", {"class" : "header__article-category__title"}).text
-    text = info.find("div", {"class" : "article__content"}).text
+
+    try:
+        author = info.find("div", {"class" : "article__header__author-block"}).text
+    except AttributeError:
+        author = "no author"
+
+    try:
+        title = info.find("span", {"class" : "header__article-category__title"}).text
+    except AttributeError:
+        title = "no title"
+
+    try:
+        text = info.find("div", {"class" : "article__content"}).text
+    except AttributeError:
+        text = "no text"
+
     articles.append(Article(title, text, author))
 
 db = firebase.FirebaseApplication(firebase_url)
 
 for smth in articles:
     print(smth.__dict__)
-    db.post("/users", smth.__dict__)
+    db.post("/articles", smth.__dict__)

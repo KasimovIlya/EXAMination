@@ -41,7 +41,7 @@ for i in range(0, len(urls)):
         text = info.find("div", {"class" : "article__content"}).text
     except AttributeError:
         text = "no text"
-
+    
     try:
         time = info.find("span", {"class" : "article__header__date"}).text
     except AttributeError:
@@ -53,7 +53,7 @@ for i in range(0, len(urls)):
         image = "no image"
 
     articles.append(Article(title, text, author, time, image))
-print(info)
+
 db = firebase.FirebaseApplication(firebase_url)
 
 for smth in articles:

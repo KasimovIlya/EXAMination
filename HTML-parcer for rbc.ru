@@ -48,7 +48,7 @@ for i in range(0, len(urls)):
         time = "no time"
 
     try:
-        image = info.find("a", {"class" : "highslide js-infocraphics article__main-image__link"}).find("img")["src"].text
+        image = info.find("a", {"class" : "highslide js-infocraphics article__main-image__link"}).find("img")["src"]
     except AttributeError:
         image = "no image"
 
